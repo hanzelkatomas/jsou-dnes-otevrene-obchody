@@ -1,0 +1,1 @@
+# jsou-dnes-otevrene-obchody
