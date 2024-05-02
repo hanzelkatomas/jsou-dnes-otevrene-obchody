@@ -1,4 +1,4 @@
-import { test, expect} from "node:test"
+import { test, expect} from "bun:test"
 
 // TODO
 test("easters", () => {
