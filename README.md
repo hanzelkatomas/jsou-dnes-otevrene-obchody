@@ -1,1 +1,1 @@
-# jsou-dnes-otevrene-obchody
+# Jsou dnes otevřené obchody?
