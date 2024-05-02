@@ -13,6 +13,7 @@ export function writeDOM (element) {
 }
 
 
+
 const currentYear = new Date().getFullYear()
 
 const closedStoresHolidays = {
