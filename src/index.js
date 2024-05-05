@@ -1,22 +1,33 @@
-export function writeDOM (element) {
+export function writeDOM (element, infoElement) {
   if (!element) {
     throw new Error('Element not found')
   }
 
-  if (areStoresClosed()) {
+  if (areStoresClosed(new Date())) {
     element.innerHTML = "Ne"
     element.style.color = "red"
+
+    infoElement.innerHTML = "Obchody s rozlohou nad 200 m² jsou dnes zavřené 😏"
   } else {
     element.innerHTML = "Ano"
     element.style.color = "green"
+
+    infoElement.innerHTML = "Dnes nejsou ovlivněny otevírací doby obchodů žádným státním svátkem."
   }
 }
 
 
+function areStoresClosed(currentDate) {
+  if (!currentDate) {
+    throw new Error("Current date is not defined")
+  }
 
-const currentYear = new Date().getFullYear()
+  return Object.values(getClosedStoresHolidays(currentDate.getFullYear())).some(holiday => {
+    return holiday.getDate() === currentDate.getDate() && holiday.getMonth() === currentDate.getMonth()
+  })
+}
 
-const closedStoresHolidays = {
+const getClosedStoresHolidays = (currentYear) => ({
   newYear: new Date(`${currentYear}-01-01`),
   easterMonday: getEasterMondayDate(currentYear),
   stWenceslasDay: new Date(`${currentYear}-09-28`),
@@ -24,15 +35,7 @@ const closedStoresHolidays = {
   christmasEve: new Date(`${currentYear}-12-24`),
   christmasDay: new Date(`${currentYear}-12-25`),
   stStephensDay: new Date(`${currentYear}-12-26`),
-}
-
-function areStoresClosed(debugArg) {
-  const currentDate = debugArg ?? new Date()
-
-  return Object.values(closedStoresHolidays).some(holiday => {
-    return holiday.getDate() === currentDate.getDate() && holiday.getMonth() === currentDate.getMonth()
-  })
-}
+})
 
 function getEasterMondayDate(currentYear) {
   const getMConstant = currYear => {
