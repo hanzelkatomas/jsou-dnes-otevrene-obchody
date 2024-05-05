@@ -30,6 +30,7 @@ function areStoresClosed(currentDate) {
 const getClosedStoresHolidays = (currentYear) => ({
   newYear: new Date(`${currentYear}-01-01`),
   easterMonday: getEasterMondayDate(currentYear),
+  victoryDay: new Date(`${currentYear}-05-08`),
   stWenceslasDay: new Date(`${currentYear}-09-28`),
   independentCzechoslovakStateDay: new Date(`${currentYear}-10-28`),
   christmasEve: new Date(`${currentYear}-12-24`),
@@ -38,7 +39,7 @@ const getClosedStoresHolidays = (currentYear) => ({
 })
 
 function getEasterMondayDate(currentYear) {
-  const getMConstant = currYear => {
+  const getMConstant = (currYear) => {
     if (currYear >= 1900 && currYear <= 2199) {
       return 24
     }
@@ -71,6 +72,7 @@ function getEasterMondayDate(currentYear) {
   const n = getNConstant(currentYear)
   const e = (n + 2 * b + 4 * c + 6 * d) % 7
 
-  return new Date(currentYear, 2, 22 + d + e)
+  // +1 because we need to get the date of Easter Monday not Sunday
+  return new Date(currentYear, 2, 22 + d + e + 1)
 }
 
