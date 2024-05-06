@@ -3,16 +3,18 @@ export function writeDOM (element, infoElement) {
     throw new Error('Element not found')
   }
 
-  if (areStoresClosed(new Date())) {
+  const currentDate = new Date()
+
+  if (areStoresClosed(currentDate)) {
     element.innerHTML = "Ne"
     element.style.color = "red"
 
-    infoElement.innerHTML = "Obchody s rozlohou nad 200 m² jsou dnes zavřené 😏"
+    infoElement.innerHTML = `Dne <span class="date">${currentDate.toLocaleDateString("cs")}</span> jsou obchody s rozlohou nad 200 m² zavřené 😏`
   } else {
     element.innerHTML = "Ano"
     element.style.color = "green"
 
-    infoElement.innerHTML = "Dnes nejsou ovlivněny otevírací doby obchodů žádným státním svátkem."
+    infoElement.innerHTML = `Dne <span class="date">${currentDate.toLocaleDateString("cs")}</span> nejsou ovlivněny otevírací doby obchodů žádným státním svátkem.`
   }
 }
 
@@ -22,20 +24,43 @@ function areStoresClosed(currentDate) {
     throw new Error("Current date is not defined")
   }
 
-  return Object.values(getClosedStoresHolidays(currentDate.getFullYear())).some(holiday => {
-    return holiday.getDate() === currentDate.getDate() && holiday.getMonth() === currentDate.getMonth()
-  })
+  return Object.values(getClosedStoresHolidays(currentDate.getFullYear()))
+    .some(({ date: holiday }) => holiday.getDate() === currentDate.getDate() && holiday.getMonth() === currentDate.getMonth())
 }
 
 const getClosedStoresHolidays = (currentYear) => ({
-  newYear: new Date(`${currentYear}-01-01`),
-  easterMonday: getEasterMondayDate(currentYear),
-  victoryDay: new Date(`${currentYear}-05-08`),
-  stWenceslasDay: new Date(`${currentYear}-09-28`),
-  independentCzechoslovakStateDay: new Date(`${currentYear}-10-28`),
-  christmasEve: new Date(`${currentYear}-12-24`),
-  christmasDay: new Date(`${currentYear}-12-25`),
-  stStephensDay: new Date(`${currentYear}-12-26`),
+  newYear: {
+    date: new Date(`${currentYear}-01-01`),
+    label: "Nový rok"
+  },
+  easterMonday: {
+    date: getEasterMondayDate(currentYear),
+    label: "Velikonoční pondělí"
+  },
+  victoryDay: {
+    date: new Date(`${currentYear}-05-08`),
+    label: "Den vítězství"
+  },
+  stWenceslasDay: {
+    date: new Date(`${currentYear}-09-28`),
+    label: "Den české státnosti"
+  },
+  independentCzechoslovakStateDay: {
+    date: new Date(`${currentYear}-10-28`),
+    label: "Den vzniku samostatného československého státu"
+  },
+  christmasEve: {
+    date: new Date(`${currentYear}-12-24`),
+    label: "Štědrý den"
+  },
+  christmasDay: {
+    date: new Date(`${currentYear}-12-25`),
+    label: "1. svátek vánoční"
+  },
+  stStephensDay: {
+    date: new Date(`${currentYear}-12-26`),
+    label: "2. svátek vánoční"
+  }
 })
 
 function getEasterMondayDate(currentYear) {
@@ -74,5 +99,15 @@ function getEasterMondayDate(currentYear) {
 
   // +1 because we need to get the date of Easter Monday not Sunday
   return new Date(currentYear, 2, 22 + d + e + 1)
+}
+
+function getNextHolidays (currentDate) {
+  const currentYear = currentDate.getFullYear()
+  const holidays = getClosedStoresHolidays(currentYear)
+
+  // Get holidays after the current date and sort them by date
+  return Object.values(holidays)
+    .filter(({ date: holiday }) => holiday > currentDate)
+    .sort((a, b) => a - b)[0]
 }
 
