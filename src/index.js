@@ -1,4 +1,4 @@
-export function writeDOM (element, infoElement) {
+export function writeDOM (element, infoElement, holidaysDateEl, holidaysLabelEl) {
   if (!element) {
     throw new Error('Element not found')
   }
@@ -7,14 +7,21 @@ export function writeDOM (element, infoElement) {
 
   if (areStoresClosed(currentDate)) {
     element.innerHTML = "Ne"
-    element.style.color = "red"
+    element.style.color = "#A96569"
 
     infoElement.innerHTML = `Dne <span class="date">${currentDate.toLocaleDateString("cs")}</span> jsou obchody s rozlohou nad 200 m² zavřené 😏`
   } else {
     element.innerHTML = "Ano"
-    element.style.color = "green"
+    element.style.color = "#007E75"
 
     infoElement.innerHTML = `Dne <span class="date">${currentDate.toLocaleDateString("cs")}</span> nejsou ovlivněny otevírací doby obchodů žádným státním svátkem.`
+  }
+
+  const nextHolidays = getNextHolidays(currentDate)
+
+  if (nextHolidays) {
+    holidaysDateEl.innerHTML = nextHolidays.date.toLocaleDateString("cs")
+    holidaysLabelEl.innerHTML = nextHolidays.label
   }
 }
 
