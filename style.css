@@ -7,7 +7,7 @@
   color-scheme: light dark;
   color: var(--bright);
 
-  background: linear-gradient(110.6deg, #352F36 31.2%, rgb(63, 61, 61) 78.9%);
+  background: linear-gradient(110.6deg, #352F36 31.2%, rgba(255, 255, 240, 0.37) 78.9%);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
