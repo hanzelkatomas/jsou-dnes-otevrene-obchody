@@ -93,8 +93,8 @@ h1, h2 {
 @media (prefers-color-scheme: light) {
   :root {
     color: var(--dark);
+    background: linear-gradient(109.6deg, var(--bright) 45.2%, #504a51 96.9%);
   }
-    background: linear-gradient(109.6deg, var(--bright) 31.2%, var(--dark) 96.9%);
 }
 
 @media (prefers-color-scheme: light) {
